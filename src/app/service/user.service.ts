@@ -3,18 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { CustomHttpResponse, Profile } from '../interface/appstates';
 import { User } from '../interface/user';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Key } from '../enum/key.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private readonly server: string = 'localhost://8000';
+  private readonly server: string = 'http://localhost:8000';
+  private jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
 
   save$ = (user: User) => <Observable<CustomHttpResponse<Profile>>>
   this.http.post<CustomHttpResponse<Profile>>
-  (`${this.server}/user/register`, user)
+  (`${this.server}/users/register`, user)
     .pipe(
       tap(console.log),
       catchError(this.handleError)
@@ -23,7 +26,7 @@ export class UserService {
 
   login$ = (email:string, password: string) => <Observable<CustomHttpResponse<Profile>>>
   this.http.post<CustomHttpResponse<Profile>>
-  (`${this.server}/user/login`, {email, password})
+  (`${this.server}/users/login`, {email, password})
     .pipe(
       tap(console.log),
       catchError(this.handleError)
@@ -31,7 +34,6 @@ export class UserService {
 
 
     private handleError(error: HttpErrorResponse): Observable<never> {
-      console.log(error);
       let errorMessage: string;
       if (error.error instanceof ErrorEvent) {
         errorMessage  = `A client error occured - ${error.error.message}`;
@@ -47,4 +49,6 @@ export class UserService {
       }
       return throwError(() => errorMessage);
     }
+
+    isAuthenticated = (): boolean => (this.jwtHelper.decodeToken<string>(localStorage.getItem(Key.TOKEN))) && !(this.jwtHelper.isTokenExpired(localStorage.getItem(Key.TOKEN))) ? true : false;
 }
