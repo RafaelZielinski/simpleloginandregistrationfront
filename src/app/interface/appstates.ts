@@ -10,6 +10,13 @@ export interface LoginState {
     phone?: string;
 }
 
+export interface RegisterState {
+    dataState: DataState;
+    registerSuccess?: boolean;
+    error?: string;
+    message?: string;
+}
+
 
 export interface CustomHttpResponse<T> {
     timeStamp: Date;
