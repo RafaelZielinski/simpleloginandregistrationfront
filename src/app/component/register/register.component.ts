@@ -12,7 +12,7 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class RegisterComponent {
   readonly DataState = DataState;
-  registerState$ : Observable<RegisterState> = of({ dataState: DataState.LOADED, registerSuccess:true});
+  registerState$ : Observable<RegisterState> = of({ dataState: DataState.LOADED, registerSuccess:false});
   private isClosed = new BehaviorSubject<boolean>(false);
   isClosed$ = this.isClosed.asObservable();
 

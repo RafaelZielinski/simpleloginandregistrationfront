@@ -6,6 +6,7 @@ import { DataState } from 'src/app/enum/datastate.enum';
 import { Key } from 'src/app/enum/key.enum';
 import { LoginState } from 'src/app/interface/appstates';
 import { UserService } from 'src/app/service/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +19,14 @@ export class LoginComponent implements OnInit {
   private phoneSubject = new BehaviorSubject<string>('null');
   private emailSubject = new BehaviorSubject<string>('null');
   readonly DataState = DataState;
+  readonly link = environment.API_BASE_URL;
 
   constructor(private router: Router, private userService: UserService) {
-
+    
   }
   ngOnInit(): void {
     this.userService.isAuthenticated() ? this.router.navigate(['/']) : this.router.navigate(['/login']);
+    console.log(this.link);
   }
 
 
