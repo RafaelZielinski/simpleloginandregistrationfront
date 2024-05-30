@@ -10,4 +10,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Simple Login and Registration app';
+
+  constructor() {
+    console.log(process.env['PI_KEY'])
+  }
 }
